@@ -2,7 +2,9 @@
   "name": "git-more",
   "displayName": "git-more",
   "description": "more shortcuts for git",
+  "publisher": "yashweblife",
   "version": "0.0.1",
+  "repository": "https://github.com/yashweblife/git-more",
   "engines": {
     "vscode": "^1.79.0"
   },
