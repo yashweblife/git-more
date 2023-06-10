@@ -29,7 +29,7 @@ function activate(context) {
 		}
 		vscode.window.showInputBox().then((value)=>{
 			if(value !== undefined && value !== ""){
-				// gm.commit(value)
+				gm.commit(value)
 				console.log(value)
 				vscode.window.showInformationMessage("Committed with the message: " + value)
 			}else{
