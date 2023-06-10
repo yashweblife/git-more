@@ -2,9 +2,6 @@ const vscode = require('vscode');
 const sg = require('simple-git')
 const gm = sg.simpleGit();
 function activate(context) {
-
-	console.log('Congratulations, your extension "git-more" is now active!');
-
 	let stasher = vscode.commands.registerCommand('git-more.stage', function () {
 		if(!gm.checkIsRepo()){
 			vscode.window.showErrorMessage("The current directory is not a git")
@@ -38,7 +35,19 @@ function activate(context) {
 		})
 		
 	})
-	context.subscriptions.push(stasher, committer);
+	let pusher = vscode.commands.registerCommand("git-more.push", function(){
+		if(!gm.checkIsRepo()){
+			return;
+		}
+		gm.push();
+	})
+	let puller = vscode.commands.registerCommand("git-more.pull", function(){
+		if(!gm.checkIsRepo()){
+			return;
+		}
+		gm.pull();
+	})
+	context.subscriptions.push(stasher, committer, pusher, puller);
 }
 
 function deactivate() {}

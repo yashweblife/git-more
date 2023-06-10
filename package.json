@@ -22,6 +22,14 @@
       {
         "command": "git-more.commit",
         "title": "Commit Staged Files"
+      },
+      {
+        "command": "git-more.push",
+        "title": "Git Push Changes"
+      },
+      {
+        "command": "git-more.pull",
+        "title": "Git Pull"
       }
     ],
     "keybindings":[
@@ -32,6 +40,14 @@
       {
         "command": "git-more.commit",
         "key": "ctrl+shift+alt+c"
+      },
+      {
+        "command": "git-more.push",
+        "key": "ctrl+shift+alt+u"
+      },
+      {
+        "command": "git-more.pull",
+        "key": "ctrl+shift+alt+d"
       }
     ]
   },
