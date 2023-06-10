@@ -1,0 +1,55 @@
+{
+  "name": "git-more",
+  "displayName": "git-more",
+  "description": "more shortcuts for git",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.79.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "git-more.stage",
+        "title": "Stage File"
+      },
+      {
+        "command": "git-more.commit",
+        "title": "Commit Staged Files"
+      }
+    ],
+    "keybindings":[
+      {
+        "command": "git-more.stage",
+        "key": "ctrl+shift+alt+a"
+      },
+      {
+        "command": "git-more.commit",
+        "key": "ctrl+shift+alt+c"
+      }
+    ]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "20.2.5",
+    "@types/vscode": "^1.79.0",
+    "@vscode/test-electron": "^2.3.2",
+    "eslint": "^8.41.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "simple-git": "^3.19.0"
+  }
+}
