@@ -1,5 +1,7 @@
 const vscode = require('vscode');
 const sg = require('simple-git');
+const path = require('path');
+const fs = require('fs');
 const gm = sg.simpleGit();
 
 const not_git_dir = "This is not a git directory";
@@ -15,9 +17,15 @@ function isValidGitRepo() {
 		vscode.window.showErrorMessage(not_git_dir)
 		return false
 	}
-	return(true);
+	return (true);
 }
-
+function getWebViewContent(p) {
+	const resPath = vscode.Uri.file(
+		path.join(__dirname, p)
+	)
+	const file = fs.readFileSync(resPath.fsPath, 'utf-8')
+	return file;
+}
 function activate(context) {
 	// TODO: Curate more messages
 	/**
@@ -44,7 +52,7 @@ function activate(context) {
 	 * Commits staged changes with message
 	 */
 	let committer = vscode.commands.registerCommand("git-more.commit", function () {
-		if(!isValidGitRepo()){
+		if (!isValidGitRepo()) {
 			return;
 		}
 		vscode.window.showInputBox()
@@ -62,7 +70,7 @@ function activate(context) {
 	 * Pushes the changes to origin
 	 */
 	let pusher = vscode.commands.registerCommand("git-more.push", function () {
-		if(!isValidGitRepo()){
+		if (!isValidGitRepo()) {
 			return;
 		}
 		vscode.window.showInformationMessage("Pushing Changes...")
@@ -87,13 +95,22 @@ function activate(context) {
 	 * Pulls latest version
 	 */
 	let puller = vscode.commands.registerCommand("git-more.pull", function () {
-		if(!isValidGitRepo()){
+		if (!isValidGitRepo()) {
 			return;
 		}
 		vscode.window.showInformationMessage("Pulling Changes")
 		gm.pull();
 	})
-	context.subscriptions.push(stager, committer, pusher, puller);
+	/**
+	 * View the app page
+	 */
+	let viewer = vscode.commands.registerCommand("git-more.view", function () {
+		const panel = vscode.window.createWebviewPanel("git-more-view", "Git More View", vscode.ViewColumn.One, {})
+		panel.webview.html = getWebViewContent("./app/index.html")
+
+	})
+
+	context.subscriptions.push(stager, committer, pusher, puller, viewer);
 }
 
 function deactivate() { }

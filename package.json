@@ -32,6 +32,10 @@
       {
         "command": "git-more.pull",
         "title": "Git Pull"
+      },
+      {
+        "command": "git-more.view",
+        "title": "Visualizer"
       }
     ],
     "keybindings":[
@@ -58,6 +62,12 @@
         "mac": "ctrl+cmd+down",
         "command": "git-more.pull",
         "key": "ctrl+meta+down"
+      },
+      {
+        "win": "ctrl+super+v",
+        "mac": "ctrl+cmd+v",
+        "command": "git-more.view",
+        "key": "ctrl+meta+v"
       }
     ]
   },
