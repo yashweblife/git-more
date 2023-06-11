@@ -3,7 +3,7 @@
   "displayName": "git-more",
   "description": "Get more shortcuts for git",
   "publisher": "yashweblife",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "repository": "https://github.com/yashweblife/git-more",
   "icon": "icon.png",
   "engines": {
