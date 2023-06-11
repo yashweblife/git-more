@@ -5,7 +5,7 @@
   "publisher": "yashweblife",
   "version": "0.0.4",
   "repository": "https://github.com/yashweblife/git-more",
-  "icon": "./icon.png",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.79.0"
   },
