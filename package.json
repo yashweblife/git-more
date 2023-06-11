@@ -3,8 +3,9 @@
   "displayName": "git-more",
   "description": "more shortcuts for git",
   "publisher": "yashweblife",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "repository": "https://github.com/yashweblife/git-more",
+  "icon": "./icon.png",
   "engines": {
     "vscode": "^1.79.0"
   },
@@ -35,19 +36,19 @@
     "keybindings":[
       {
         "command": "git-more.stage",
-        "key": "ctrl+shift+alt+a"
+        "key": "ctrl+tab ctrl+a"
       },
       {
         "command": "git-more.commit",
-        "key": "ctrl+shift+alt+c"
+        "key": "ctrl+tab ctrl+c"
       },
       {
         "command": "git-more.push",
-        "key": "ctrl+shift+alt+u"
+        "key": "ctrl+tab ctrl+u"
       },
       {
         "command": "git-more.pull",
-        "key": "ctrl+shift+alt+d"
+        "key": "ctrl+tab ctrl+d"
       }
     ]
   },
