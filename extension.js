@@ -2,12 +2,14 @@ const vscode = require('vscode');
 const sg = require('simple-git');
 const gm = sg.simpleGit();
 function activate(context) {
+	// TODO: Curate more messages
 	const not_git_dir = "This is not a git directory";
 	const command_fail = "Something went wrong with the command"
 	/**
 	 * Stages changes
 	 */
 	let stager = vscode.commands.registerCommand('git-more.stage', function () {
+		// TODO: make this a functions
 		if(!gm.checkIsRepo()){
 			vscode.window.showErrorMessage(not_git_dir)
 			return
