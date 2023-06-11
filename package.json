@@ -37,19 +37,19 @@
     "keybindings":[
       {
         "command": "git-more.stage",
-        "key": "ctrl+tab ctrl+a"
+        "key": "ctrl+meta+left"
       },
       {
         "command": "git-more.commit",
-        "key": "ctrl+tab ctrl+c"
+        "key": "ctrl+meta+right"
       },
       {
         "command": "git-more.push",
-        "key": "ctrl+tab ctrl+u"
+        "key": "ctrl+meta+up"
       },
       {
         "command": "git-more.pull",
-        "key": "ctrl+tab ctrl+d"
+        "key": "ctrl+meta+down"
       }
     ]
   },

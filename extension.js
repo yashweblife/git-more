@@ -4,6 +4,9 @@ const gm = sg.simpleGit();
 function activate(context) {
 	const not_git_dir = "This is not a git directory";
 	const command_fail = "Something went wrong with the command"
+	/**
+	 * Stages changes
+	 */
 	let stager = vscode.commands.registerCommand('git-more.stage', function () {
 		if(!gm.checkIsRepo()){
 			vscode.window.showErrorMessage(not_git_dir)
@@ -21,6 +24,9 @@ function activate(context) {
 			})
 		}
 	});
+	/**
+	 * Commits staged changes with message
+	 */
 	let committer = vscode.commands.registerCommand("git-more.commit", function(){
 		if(!gm.checkIsRepo()){
 			vscode.window.showErrorMessage(not_git_dir)
@@ -37,6 +43,9 @@ function activate(context) {
 			}
 		})		
 	})
+	/**
+	 * Pushes the changes to origin
+	 */
 	let pusher = vscode.commands.registerCommand("git-more.push", function(){
 		if(!gm.checkIsRepo()){
 			vscode.window.showErrorMessage(not_git_dir)
@@ -44,6 +53,9 @@ function activate(context) {
 		}
 		gm.push();
 	})
+	/**
+	 * Pulls latest version
+	 */
 	let puller = vscode.commands.registerCommand("git-more.pull", function(){
 		if(!gm.checkIsRepo()){
 			vscode.window.showErrorMessage(not_git_dir)
