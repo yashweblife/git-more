@@ -10,17 +10,17 @@ function activate(context) {
 	 */
 	let stager = vscode.commands.registerCommand('git-more.stage', function () {
 		// TODO: make this a functions
-		if(!gm.checkIsRepo()){
+		if (!gm.checkIsRepo()) {
 			vscode.window.showErrorMessage(not_git_dir)
 			return
 		}
 		const editor = vscode.window.activeTextEditor;
-		if(editor){
+		if (editor) {
 			const file = editor.document.uri.fsPath;
-			gm.add(file, (err)=>{
-				if(err){
+			gm.add(file, (err) => {
+				if (err) {
 					vscode.window.showErrorMessage(command_fail + "\n" + err.message)
-				}else{
+				} else {
 					vscode.window.showInformationMessage(file + " Was Staged! 👍")
 				}
 			})
@@ -29,46 +29,48 @@ function activate(context) {
 	/**
 	 * Commits staged changes with message
 	 */
-	let committer = vscode.commands.registerCommand("git-more.commit", function(){
-		if(!gm.checkIsRepo()){
+	let committer = vscode.commands.registerCommand("git-more.commit", function () {
+		if (!gm.checkIsRepo()) {
 			vscode.window.showErrorMessage(not_git_dir)
 			return
 		}
 		vscode.window.showInputBox()
-		.then((value)=>{
-			if(value !== undefined && value !== ""){
-				gm.commit(value)
-				console.log(value)
-				vscode.window.showInformationMessage("Committed with the message: " + value)
-			}else{
-				vscode.window.showErrorMessage("Canceled")
-			}
-		})		
+			.then((value) => {
+				if (value !== undefined && value !== "") {
+					gm.commit(value)
+					console.log(value)
+					vscode.window.showInformationMessage("Committed with the message: " + value)
+				} else {
+					vscode.window.showErrorMessage("Canceled")
+				}
+			})
 	})
 	/**
 	 * Pushes the changes to origin
 	 */
-	let pusher = vscode.commands.registerCommand("git-more.push", function(){
-		if(!gm.checkIsRepo()){
+	let pusher = vscode.commands.registerCommand("git-more.push", function () {
+		if (!gm.checkIsRepo()) {
 			vscode.window.showErrorMessage(not_git_dir)
 			return;
 		}
+		vscode.window.showInformationMessage("Pushing Changes...")
 		gm.push();
 	})
 	/**
 	 * Pulls latest version
 	 */
-	let puller = vscode.commands.registerCommand("git-more.pull", function(){
-		if(!gm.checkIsRepo()){
+	let puller = vscode.commands.registerCommand("git-more.pull", function () {
+		if (!gm.checkIsRepo()) {
 			vscode.window.showErrorMessage(not_git_dir)
 			return;
 		}
+		vscode.window.showInformationMessage("Pulling Changes")
 		gm.pull();
 	})
 	context.subscriptions.push(stager, committer, pusher, puller);
 }
 
-function deactivate() {}
+function deactivate() { }
 
 module.exports = {
 	activate,
