@@ -3,7 +3,7 @@
   "displayName": "git-more",
   "description": "Get more shortcuts for git",
   "publisher": "yashweblife",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "repository": "https://github.com/yashweblife/git-more",
   "icon": "icon.png",
   "engines": {
@@ -32,6 +32,10 @@
       {
         "command": "git-more.pull",
         "title": "Git Pull"
+      },
+      {
+        "command": "git-more.view",
+        "title": "Visualizer"
       }
     ],
     "keybindings":[
@@ -58,6 +62,12 @@
         "mac": "ctrl+cmd+down",
         "command": "git-more.pull",
         "key": "ctrl+meta+down"
+      },
+      {
+        "win": "ctrl+super+v",
+        "mac": "ctrl+cmd+v",
+        "command": "git-more.view",
+        "key": "ctrl+meta+v"
       }
     ]
   },
