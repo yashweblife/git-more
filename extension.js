@@ -5,7 +5,7 @@ const gm = sg.simpleGit();
 const not_git_dir = "This is not a git directory";
 const command_fail = "Something went wrong with the command"
 
-function isValidGirRepo(){
+function isValidGirRepo() {
 	if (!gm.checkIsRepo()) {
 		vscode.window.showErrorMessage(not_git_dir)
 		return false
@@ -20,7 +20,7 @@ function activate(context) {
 	 */
 	let stager = vscode.commands.registerCommand('git-more.stage', function () {
 		// TODO: make this a functions
-		if(!isValidGirRepo()){
+		if (!isValidGirRepo()) {
 			return
 		}
 		const editor = vscode.window.activeTextEditor;
@@ -63,7 +63,22 @@ function activate(context) {
 			return;
 		}
 		vscode.window.showInformationMessage("Pushing Changes...")
-		gm.push();
+		gm.branchLocal((error, result) => {
+			if (error) {
+				console.log(error)
+				return;
+			}
+			const name = result.current
+			// @ts-ignore
+			gm.push('origin', name, (error, result) => {
+				// @ts-ignore
+				if (error) {
+					vscode.window.showErrorMessage("Push Didnt Work\n" + error.message)
+					return;
+				}
+				vscode.window.showErrorMessage(result)
+			})
+		})
 	})
 	/**
 	 * Pulls latest version
