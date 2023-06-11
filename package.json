@@ -1,16 +1,17 @@
 {
   "name": "git-more",
   "displayName": "git-more",
-  "description": "more shortcuts for git",
+  "description": "Get more shortcuts for git",
   "publisher": "yashweblife",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": "https://github.com/yashweblife/git-more",
   "icon": "./icon.png",
   "engines": {
     "vscode": "^1.79.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Keymaps"
   ],
   "activationEvents": [],
   "main": "./extension.js",
