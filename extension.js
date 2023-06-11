@@ -5,13 +5,18 @@ const gm = sg.simpleGit();
 const not_git_dir = "This is not a git directory";
 const command_fail = "Something went wrong with the command"
 
-function isValidGirRepo() {
+
+/**
+ * Check if the workspace is a valid git repo
+ * @returns 
+ */
+function isValidGitRepo() {
 	if (!gm.checkIsRepo()) {
 		vscode.window.showErrorMessage(not_git_dir)
 		return false
 	}
+	return(true);
 }
-
 
 function activate(context) {
 	// TODO: Curate more messages
@@ -20,7 +25,7 @@ function activate(context) {
 	 */
 	let stager = vscode.commands.registerCommand('git-more.stage', function () {
 		// TODO: make this a functions
-		if (!isValidGirRepo()) {
+		if (!isValidGitRepo()) {
 			return
 		}
 		const editor = vscode.window.activeTextEditor;
@@ -39,9 +44,8 @@ function activate(context) {
 	 * Commits staged changes with message
 	 */
 	let committer = vscode.commands.registerCommand("git-more.commit", function () {
-		if (!gm.checkIsRepo()) {
-			vscode.window.showErrorMessage(not_git_dir)
-			return
+		if(!isValidGitRepo()){
+			return;
 		}
 		vscode.window.showInputBox()
 			.then((value) => {
@@ -58,8 +62,7 @@ function activate(context) {
 	 * Pushes the changes to origin
 	 */
 	let pusher = vscode.commands.registerCommand("git-more.push", function () {
-		if (!gm.checkIsRepo()) {
-			vscode.window.showErrorMessage(not_git_dir)
+		if(!isValidGitRepo()){
 			return;
 		}
 		vscode.window.showInformationMessage("Pushing Changes...")
@@ -84,8 +87,7 @@ function activate(context) {
 	 * Pulls latest version
 	 */
 	let puller = vscode.commands.registerCommand("git-more.pull", function () {
-		if (!gm.checkIsRepo()) {
-			vscode.window.showErrorMessage(not_git_dir)
+		if(!isValidGitRepo()){
 			return;
 		}
 		vscode.window.showInformationMessage("Pulling Changes")
