@@ -1,10 +1,12 @@
 const vscode = require('vscode');
-const sg = require('simple-git')
+const sg = require('simple-git');
 const gm = sg.simpleGit();
 function activate(context) {
-	let stasher = vscode.commands.registerCommand('git-more.stage', function () {
+	const not_git_dir = "This is not a git directory";
+	const command_fail = "Something went wrong with the command"
+	let stager = vscode.commands.registerCommand('git-more.stage', function () {
 		if(!gm.checkIsRepo()){
-			vscode.window.showErrorMessage("The current directory is not a git")
+			vscode.window.showErrorMessage(not_git_dir)
 			return
 		}
 		const editor = vscode.window.activeTextEditor;
@@ -12,7 +14,7 @@ function activate(context) {
 			const file = editor.document.uri.fsPath;
 			gm.add(file, (err)=>{
 				if(err){
-					vscode.window.showErrorMessage("Something went wrong with the command\n" + err.message)
+					vscode.window.showErrorMessage(command_fail + "\n" + err.message)
 				}else{
 					vscode.window.showInformationMessage(file + " Was Staged! 👍")
 				}
@@ -21,10 +23,11 @@ function activate(context) {
 	});
 	let committer = vscode.commands.registerCommand("git-more.commit", function(){
 		if(!gm.checkIsRepo()){
-			vscode.window.showErrorMessage("The current directory is not a git")
+			vscode.window.showErrorMessage(not_git_dir)
 			return
 		}
-		vscode.window.showInputBox().then((value)=>{
+		vscode.window.showInputBox()
+		.then((value)=>{
 			if(value !== undefined && value !== ""){
 				gm.commit(value)
 				console.log(value)
@@ -32,22 +35,23 @@ function activate(context) {
 			}else{
 				vscode.window.showErrorMessage("Canceled")
 			}
-		})
-		
+		})		
 	})
 	let pusher = vscode.commands.registerCommand("git-more.push", function(){
 		if(!gm.checkIsRepo()){
+			vscode.window.showErrorMessage(not_git_dir)
 			return;
 		}
 		gm.push();
 	})
 	let puller = vscode.commands.registerCommand("git-more.pull", function(){
 		if(!gm.checkIsRepo()){
+			vscode.window.showErrorMessage(not_git_dir)
 			return;
 		}
 		gm.pull();
 	})
-	context.subscriptions.push(stasher, committer, pusher, puller);
+	context.subscriptions.push(stager, committer, pusher, puller);
 }
 
 function deactivate() {}
