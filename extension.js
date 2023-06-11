@@ -8,7 +8,7 @@ const command_fail = "Something went wrong with the command"
 
 /**
  * Check if the workspace is a valid git repo
- * @returns 
+ * @returns Boolean
  */
 function isValidGitRepo() {
 	if (!gm.checkIsRepo()) {
