@@ -100,3 +100,5 @@ module.exports = {
 	activate,
 	deactivate
 }
+const test = "Hello World"
+console.log(test);
