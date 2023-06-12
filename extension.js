@@ -19,6 +19,20 @@ function isValidGitRepo() {
 	}
 	return (true);
 }
+
+function showMessage(message){
+	const duration = 3000;
+	const msg = vscode.window.setStatusBarMessage(message, duration)
+	setTimeout(() => {
+		msg.dispose()
+	}, duration);
+}
+
+function showError(message){
+	vscode.window.showErrorMessage(message)
+}
+
+
 /**
  * Get file content
  * @param {string} p 
@@ -45,9 +59,9 @@ function stageFile(name = undefined) {
 		const file = (name !== undefined) ? name : editor.document.uri.fsPath;
 		gm.add(file, (err) => {
 			if (err) {
-				vscode.window.showErrorMessage(command_fail + "\n" + err.message)
+				showError(command_fail + "\n" + err.message)
 			} else {
-				vscode.window.showInformationMessage(file + " Was Staged! 👍")
+				showMessage(file + " Was Staged! 👍")
 			}
 		})
 	}
@@ -64,9 +78,9 @@ function commitChanges() {
 			if (value !== undefined && value !== "") {
 				gm.commit(value)
 				console.log(value)
-				vscode.window.showInformationMessage("Committed with the message: " + value)
+				showMessage("Committed with the message: " + value)
 			} else {
-				vscode.window.showErrorMessage("Canceled")
+				showError("Canceled")
 			}
 		})
 }
@@ -78,7 +92,7 @@ function pushChanges() {
 	if (!isValidGitRepo()) {
 		return;
 	}
-	vscode.window.showInformationMessage("Pushing Changes...")
+	showMessage("Pushing Changes...")
 	gm.branchLocal((error, result) => {
 		if (error) {
 			console.log(error)
@@ -89,10 +103,10 @@ function pushChanges() {
 		gm.push('origin', name, (error, result) => {
 			// @ts-ignore
 			if (error) {
-				vscode.window.showErrorMessage("Push Didnt Work\n" + error.message)
+				showMessage("Push Didnt Work\n" + error.message)
 				return;
 			}
-			vscode.window.showErrorMessage(result)
+			showError(result)
 		})
 	})
 }
@@ -104,7 +118,7 @@ function pullChanges() {
 	if (!isValidGitRepo()) {
 		return;
 	}
-	vscode.window.showInformationMessage("Pulling Changes")
+	showMessage("Pulling Changes")
 	gm.pull();
 }
 /**
@@ -128,7 +142,7 @@ function handleViewer(context) {
 		switch (message.command) {
 			case 'add-to-stage':
 				stageFile(message.name);
-				vscode.window.showInformationMessage("Added: " + message.name);
+				showMessage("Added: " + message.name)
 				return;
 		}
 	}, undefined, context.subscriptions);
@@ -142,9 +156,9 @@ function handleCheckout() {
 			if (val) {
 				gm.checkout(val, (error) => {
 					if (error) {
-						vscode.window.showErrorMessage(error.message)
+						showError(error.message)
 					} else {
-						vscode.window.showInformationMessage("Checked Out To: " + val)
+						showMessage("Checked Out To: " + val)
 					}
 				})
 			}
