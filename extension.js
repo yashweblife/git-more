@@ -7,12 +7,12 @@ const gm = sg.simpleGit();
 const not_git_dir = "This is not a git directory";
 const command_fail = "Something went wrong with the command"
 
-
 /**
  * Check if the workspace is a valid git repo
  * @returns Boolean
  */
 function isValidGitRepo() {
+	gm.cwd(__dirname)
 	if (!gm.checkIsRepo()) {
 		vscode.window.showErrorMessage(not_git_dir)
 		return false
@@ -20,7 +20,11 @@ function isValidGitRepo() {
 	return (true);
 }
 
-function showMessage(message){
+/**
+ * Show status bar message
+ * @param {*} message 
+ */
+function showStatusMessage(message) {
 	const duration = 3000;
 	const msg = vscode.window.setStatusBarMessage(message, duration)
 	setTimeout(() => {
@@ -28,10 +32,13 @@ function showMessage(message){
 	}, duration);
 }
 
-function showError(message){
+/**
+ * Show Error
+ * @param {*} message 
+ */
+function showError(message) {
 	vscode.window.showErrorMessage(message)
 }
-
 
 /**
  * Get file content
@@ -45,6 +52,7 @@ function getWebViewContent(p) {
 	const file = fs.readFileSync(resPath.fsPath, 'utf-8')
 	return file;
 }
+
 /**
  * Adds file to stage, dont pass it an argument to use active editor
  * @param {string} name 
@@ -61,11 +69,12 @@ function stageFile(name = undefined) {
 			if (err) {
 				showError(command_fail + "\n" + err.message)
 			} else {
-				showMessage(file + " Was Staged! 👍")
+				showStatusMessage(file + " Was Staged! 👍")
 			}
 		})
 	}
 }
+
 /**
  * Commit Changes, opens a message box
  */
@@ -78,12 +87,13 @@ function commitChanges() {
 			if (value !== undefined && value !== "") {
 				gm.commit(value)
 				console.log(value)
-				showMessage("Committed with the message: " + value)
+				showStatusMessage("Committed with the message: " + value)
 			} else {
 				showError("Canceled")
 			}
 		})
 }
+
 /**
  * Push changes to origin
  * @returns 
@@ -92,7 +102,7 @@ function pushChanges() {
 	if (!isValidGitRepo()) {
 		return;
 	}
-	showMessage("Pushing Changes...")
+	showStatusMessage("Pushing Changes...")
 	gm.branchLocal((error, result) => {
 		if (error) {
 			console.log(error)
@@ -103,13 +113,14 @@ function pushChanges() {
 		gm.push('origin', name, (error, result) => {
 			// @ts-ignore
 			if (error) {
-				showMessage("Push Didnt Work\n" + error.message)
+				showStatusMessage("Push Didnt Work\n" + error.message)
 				return;
 			}
 			showError(result)
 		})
 	})
 }
+
 /**
  * Pull changes from the origin
  * @returns 
@@ -118,9 +129,10 @@ function pullChanges() {
 	if (!isValidGitRepo()) {
 		return;
 	}
-	showMessage("Pulling Changes")
+	showStatusMessage("Pulling Changes")
 	gm.pull();
 }
+
 /**
  * Manage the web-view system
  * @param {any} context 
@@ -142,11 +154,12 @@ function handleViewer(context) {
 		switch (message.command) {
 			case 'add-to-stage':
 				stageFile(message.name);
-				showMessage("Added: " + message.name)
+				showStatusMessage("Added: " + message.name)
 				return;
 		}
 	}, undefined, context.subscriptions);
 }
+
 /**
  * Checkout user to specified branch
  */
@@ -158,49 +171,54 @@ function handleCheckout() {
 					if (error) {
 						showError(error.message)
 					} else {
-						showMessage("Checked Out To: " + val)
+						showStatusMessage("Checked Out To: " + val)
 					}
 				})
 			}
 		})
 	})
 }
+
 function activate(context) {
-	// TODO: Curate more messages
 	/**
 	 * Stages changes
 	 */
-	gm.cwd(__dirname)
 	let stager = vscode.commands.registerCommand('git-more.stage', function () {
 		stageFile();
 	});
+
 	/**
 	 * Commits staged changes with message
-	 */
+	*/
 	let committer = vscode.commands.registerCommand("git-more.commit", function () {
 		commitChanges()
 	})
+	
 	/**
 	 * Pushes the changes to origin
 	 */
 	let pusher = vscode.commands.registerCommand("git-more.push", function () {
 		pushChanges()
 	})
+	
 	/**
 	 * Pulls latest version
 	 */
 	let puller = vscode.commands.registerCommand("git-more.pull", function () {
 		pullChanges()
 	})
+	
 	/**
 	 * View the app page
 	 */
 	let viewer = vscode.commands.registerCommand("git-more.view", function () {
 		handleViewer(context)
 	})
+	
 	let checkouter = vscode.commands.registerCommand("git-more.checkout", function () {
 		handleCheckout()
 	})
+	
 	context.subscriptions.push(stager, committer, pusher, puller, viewer, checkouter);
 }
 
