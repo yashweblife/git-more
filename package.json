@@ -40,31 +40,31 @@
     ],
     "keybindings":[
       {
-        "win": "ctrl+super+left",
+        "win": "ctrl+win+left",
         "mac": "ctrl+cmd+left",
         "command": "git-more.stage",
         "key": "ctrl+meta+left"
       },
       {
-        "win": "ctrl+super+right",
+        "win": "ctrl+win+right",
         "mac": "ctrl+cmd+right",
         "command": "git-more.commit",
         "key": "ctrl+meta+right"
       },
       {
-        "win": "ctrl+super+up",
+        "win": "ctrl+win+up",
         "mac": "ctrl+cmd+up",
         "command": "git-more.push",
         "key": "ctrl+meta+up"
       },
       {
-        "win": "ctrl+super+down",
+        "win": "ctrl+win+down",
         "mac": "ctrl+cmd+down",
         "command": "git-more.pull",
         "key": "ctrl+meta+down"
       },
       {
-        "win": "ctrl+super+v",
+        "win": "ctrl+win+v",
         "mac": "ctrl+cmd+v",
         "command": "git-more.view",
         "key": "ctrl+meta+v"
