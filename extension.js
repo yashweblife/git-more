@@ -133,6 +133,9 @@ function handleViewer(context){
 		}
 	}, undefined, context.subscriptions);
 }
+/**
+ * Checkout user to specified branch
+ */
 function handleCheckout(){
 	gm.branch().then((val)=>{
 		vscode.window.showQuickPick(val.all).then((val)=>{
