@@ -4,31 +4,51 @@
 
 # GIT-MORE
 
-Some useful shortcuts for git functions. Stage active file and commit them with simple shortcuts. 
+Some useful shortcuts for git functions. Stage active file and commit them with simple shortcuts.
+
 ## Features
 
-#### Stage Active File    
+#### Stage
 
-- win: `ctrl+super+left`
+- win: `ctrl+shift+win+left`
 - mac: `ctrl+cmd+left`
-- Linux: `ctrl+meta+left`
+- command: `git-more.stage`
+- key: `ctrl+meta+left`
 
-#### Commit With Message
+#### Commit
 
-- win: `ctrl+super+right`
+- win: `ctrl+shift+win+right`
 - mac: `ctrl+cmd+right`
-- Linux: `ctrl+meta+right`
+- command: `git-more.commit`
+- key: `ctrl+meta+right`
 
 #### Push
 
-- win: `ctrl+super+up`
+- win: `ctrl+shift+win+up`
 - mac: `ctrl+cmd+up`
-- Linux: `ctrl+meta+up`
+- command: `git-more.push`
+- key: `ctrl+meta+up`
 
 #### Pull
 
-- win: `ctrl+super+down`
+- win: `ctrl+shift+win+down`
 - mac: `ctrl+cmd+down`
-- Linux: `ctrl+meta+down`
+- command: `git-more.pull`
+- key: `ctrl+meta+down`
+
+#### Viewer
+
+- win: `ctrl+shift+win+v`
+- mac: `ctrl+cmd+v"`
+- command: `git-more.view`
+- key: `ctrl+meta+v`
+
+#### Checkout
+
+- win: `ctrl+shift+win+c`
+- mac: `ctrl+cmd+c`
+- command: `git-more.checkout`
+- key: `ctrl+meta+c`
+
 
 There will be more functionality add based on demand.
