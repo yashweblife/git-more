@@ -170,6 +170,7 @@ function activate(context) {
 	/**
 	 * Stages changes
 	 */
+	gm.cwd(__dirname)
 	let stager = vscode.commands.registerCommand('git-more.stage', function () {
 		stageFile();
 	});

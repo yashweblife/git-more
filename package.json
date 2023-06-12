@@ -44,37 +44,37 @@
     ],
     "keybindings":[
       {
-        "win": "ctrl+win+left",
+        "win": "ctrl+shift+win+left",
         "mac": "ctrl+cmd+left",
         "command": "git-more.stage",
         "key": "ctrl+meta+left"
       },
       {
-        "win": "ctrl+win+right",
+        "win": "ctrl+shift+win+right",
         "mac": "ctrl+cmd+right",
         "command": "git-more.commit",
         "key": "ctrl+meta+right"
       },
       {
-        "win": "ctrl+win+up",
+        "win": "ctrl+shift+win+up",
         "mac": "ctrl+cmd+up",
         "command": "git-more.push",
         "key": "ctrl+meta+up"
       },
       {
-        "win": "ctrl+win+down",
+        "win": "ctrl+shift+win+down",
         "mac": "ctrl+cmd+down",
         "command": "git-more.pull",
         "key": "ctrl+meta+down"
       },
       {
-        "win": "ctrl+win+v",
+        "win": "ctrl+shift+win+v",
         "mac": "ctrl+cmd+v",
         "command": "git-more.view",
         "key": "ctrl+meta+v"
       },
       {
-        "win": "ctrl+win+c",
+        "win": "ctrl+shift+win+c",
         "mac": "ctrl+cmd+c",
         "command": "git-more.checkout",
         "key": "ctrl+meta+c"
