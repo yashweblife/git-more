@@ -19,6 +19,7 @@ function isValidGitRepo() {
 	}
 	return (true);
 }
+
 function getWebViewContent(p) {
 	const resPath = vscode.Uri.file(
 		path.join(__dirname, p)
@@ -26,27 +27,31 @@ function getWebViewContent(p) {
 	const file = fs.readFileSync(resPath.fsPath, 'utf-8')
 	return file;
 }
+
+function stageFile(name){
+	if (!isValidGitRepo()) {
+		return
+	}
+	const editor = vscode.window.activeTextEditor;
+	if (editor) {
+		const file = (name!== undefined)? name : editor.document.uri.fsPath;
+		gm.add(file, (err) => {
+			if (err) {
+				vscode.window.showErrorMessage(command_fail + "\n" + err.message)
+			} else {
+				vscode.window.showInformationMessage(file + " Was Staged! 👍")
+			}
+		})
+	}
+}
+
 function activate(context) {
 	// TODO: Curate more messages
 	/**
 	 * Stages changes
 	 */
 	let stager = vscode.commands.registerCommand('git-more.stage', function () {
-		// TODO: make this a functions
-		if (!isValidGitRepo()) {
-			return
-		}
-		const editor = vscode.window.activeTextEditor;
-		if (editor) {
-			const file = editor.document.uri.fsPath;
-			gm.add(file, (err) => {
-				if (err) {
-					vscode.window.showErrorMessage(command_fail + "\n" + err.message)
-				} else {
-					vscode.window.showInformationMessage(file + " Was Staged! 👍")
-				}
-			})
-		}
+		stageFile();
 	});
 	/**
 	 * Commits staged changes with message
@@ -105,8 +110,26 @@ function activate(context) {
 	 * View the app page
 	 */
 	let viewer = vscode.commands.registerCommand("git-more.view", function () {
-		const panel = vscode.window.createWebviewPanel("git-more-view", "Git More View", vscode.ViewColumn.One, {})
+		const panel = vscode.window.createWebviewPanel("git-more-view", "Git More View", vscode.ViewColumn.One, 
+		{
+			enableScripts:true,
+			// localResourceRoots:[vscode.Uri.file(path.join(context.extensionPath,'webview'))],
+		})
 		panel.webview.html = getWebViewContent("./app/index.html")
+		gm.status((error, result)=>{
+			panel.webview.postMessage({
+				message:"Hello World",
+				stats: result
+			})
+		})
+		panel.webview.onDidReceiveMessage((message)=>{
+			switch(message.command){
+				case 'add-to-stage':
+					stageFile(message.name);
+					vscode.window.showInformationMessage("Added: " + message.name);
+					return;
+			}
+		}, undefined, context.subscriptions);
 
 	})
 
