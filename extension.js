@@ -20,7 +20,7 @@ function isValidGitRepo() {
 	return (true);
 }
 /**
- * 
+ * Get file content
  * @param {string} p 
  * @returns 
  */
@@ -52,6 +52,87 @@ function stageFile(name=undefined){
 		})
 	}
 }
+/**
+ * Commit Changes, opens a message box
+ */
+function commitChanges(){
+	if (!isValidGitRepo()) {
+		return;
+	}
+	vscode.window.showInputBox()
+		.then((value) => {
+			if (value !== undefined && value !== "") {
+				gm.commit(value)
+				console.log(value)
+				vscode.window.showInformationMessage("Committed with the message: " + value)
+			} else {
+				vscode.window.showErrorMessage("Canceled")
+			}
+		})
+}
+/**
+ * Push changes to origin
+ * @returns 
+ */
+function pushChanges(){
+	if (!isValidGitRepo()) {
+		return;
+	}
+	vscode.window.showInformationMessage("Pushing Changes...")
+	gm.branchLocal((error, result) => {
+		if (error) {
+			console.log(error)
+			return;
+		}
+		const name = result.current
+		// @ts-ignore
+		gm.push('origin', name, (error, result) => {
+			// @ts-ignore
+			if (error) {
+				vscode.window.showErrorMessage("Push Didnt Work\n" + error.message)
+				return;
+			}
+			vscode.window.showErrorMessage(result)
+		})
+	})
+}
+/**
+ * Pull changes from the origin
+ * @returns 
+ */
+function pullChanges(){
+	if (!isValidGitRepo()) {
+		return;
+	}
+	vscode.window.showInformationMessage("Pulling Changes")
+	gm.pull();
+}
+/**
+ * Manage the web-view system
+ * @param {any} context 
+ */
+function handleViewer(context){
+	const panel = vscode.window.createWebviewPanel("git-more-view", "Git More View", vscode.ViewColumn.One, 
+	{
+		enableScripts:true,
+		// localResourceRoots:[vscode.Uri.file(path.join(context.extensionPath,'webview'))],
+	})
+	panel.webview.html = getWebViewContent("./app/index.html")
+	gm.status((error, result)=>{
+		panel.webview.postMessage({
+			message:"Hello World",
+			stats: result
+		})
+	})
+	panel.webview.onDidReceiveMessage((message)=>{
+		switch(message.command){
+			case 'add-to-stage':
+				stageFile(message.name);
+				vscode.window.showInformationMessage("Added: " + message.name);
+				return;
+		}
+	}, undefined, context.subscriptions);
+}
 
 function activate(context) {
 	// TODO: Curate more messages
@@ -65,80 +146,25 @@ function activate(context) {
 	 * Commits staged changes with message
 	 */
 	let committer = vscode.commands.registerCommand("git-more.commit", function () {
-		if (!isValidGitRepo()) {
-			return;
-		}
-		vscode.window.showInputBox()
-			.then((value) => {
-				if (value !== undefined && value !== "") {
-					gm.commit(value)
-					console.log(value)
-					vscode.window.showInformationMessage("Committed with the message: " + value)
-				} else {
-					vscode.window.showErrorMessage("Canceled")
-				}
-			})
+		commitChanges()
 	})
 	/**
 	 * Pushes the changes to origin
 	 */
 	let pusher = vscode.commands.registerCommand("git-more.push", function () {
-		if (!isValidGitRepo()) {
-			return;
-		}
-		vscode.window.showInformationMessage("Pushing Changes...")
-		gm.branchLocal((error, result) => {
-			if (error) {
-				console.log(error)
-				return;
-			}
-			const name = result.current
-			// @ts-ignore
-			gm.push('origin', name, (error, result) => {
-				// @ts-ignore
-				if (error) {
-					vscode.window.showErrorMessage("Push Didnt Work\n" + error.message)
-					return;
-				}
-				vscode.window.showErrorMessage(result)
-			})
-		})
+		pushChanges()
 	})
 	/**
 	 * Pulls latest version
 	 */
 	let puller = vscode.commands.registerCommand("git-more.pull", function () {
-		if (!isValidGitRepo()) {
-			return;
-		}
-		vscode.window.showInformationMessage("Pulling Changes")
-		gm.pull();
+		pullChanges()
 	})
 	/**
 	 * View the app page
 	 */
 	let viewer = vscode.commands.registerCommand("git-more.view", function () {
-		const panel = vscode.window.createWebviewPanel("git-more-view", "Git More View", vscode.ViewColumn.One, 
-		{
-			enableScripts:true,
-			// localResourceRoots:[vscode.Uri.file(path.join(context.extensionPath,'webview'))],
-		})
-		panel.webview.html = getWebViewContent("./app/index.html")
-		gm.status((error, result)=>{
-			panel.webview.postMessage({
-				message:"Hello World",
-				stats: result
-			})
-		})
-		panel.webview.onDidReceiveMessage((message)=>{
-			switch(message.command){
-				case 'add-to-stage':
-					stageFile(message.name);
-					vscode.window.showInformationMessage("Added: " + message.name);
-					return;
-			}
-		}, undefined, context.subscriptions);
-
+		handleViewer(context)
 	})
 
 	context.subscriptions.push(stager, committer, pusher, puller, viewer);
