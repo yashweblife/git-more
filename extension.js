@@ -133,15 +133,18 @@ function handleViewer(context){
 		}
 	}, undefined, context.subscriptions);
 }
+/**
+ * Checkout user to specified branch
+ */
 function handleCheckout(){
 	gm.branch().then((val)=>{
 		vscode.window.showQuickPick(val.all).then((val)=>{
 			if(val){
-				gm.checkout(val, (error, result)=>{
+				gm.checkout(val, (error)=>{
 					if(error){
 						vscode.window.showErrorMessage(error.message)
 					}else{
-						vscode.window.showInformationMessage("Checked Out To: "+val)
+						vscode.window.showInformationMessage("Checked Out To: " + val)
 					}
 				})
 			}
