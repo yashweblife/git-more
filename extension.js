@@ -19,7 +19,11 @@ function isValidGitRepo() {
 	}
 	return (true);
 }
-
+/**
+ * 
+ * @param {string} p 
+ * @returns 
+ */
 function getWebViewContent(p) {
 	const resPath = vscode.Uri.file(
 		path.join(__dirname, p)
@@ -27,8 +31,12 @@ function getWebViewContent(p) {
 	const file = fs.readFileSync(resPath.fsPath, 'utf-8')
 	return file;
 }
-
-function stageFile(name){
+/**
+ * Adds file to stage, dont pass it an argument to use active editor
+ * @param {string} name 
+ * @returns 
+ */
+function stageFile(name=undefined){
 	if (!isValidGitRepo()) {
 		return
 	}
@@ -142,5 +150,3 @@ module.exports = {
 	activate,
 	deactivate
 }
-const test = "Hello World"
-console.log(test);
