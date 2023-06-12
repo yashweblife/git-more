@@ -133,7 +133,21 @@ function handleViewer(context){
 		}
 	}, undefined, context.subscriptions);
 }
-
+function handleCheckout(){
+	gm.branch().then((val)=>{
+		vscode.window.showQuickPick(val.all).then((val)=>{
+			if(val){
+				gm.checkout(val, (error, result)=>{
+					if(error){
+						vscode.window.showErrorMessage(error.message)
+					}else{
+						vscode.window.showInformationMessage("Checked Out To: "+val)
+					}
+				})
+			}
+		})
+	})
+}
 function activate(context) {
 	// TODO: Curate more messages
 	/**
@@ -166,8 +180,10 @@ function activate(context) {
 	let viewer = vscode.commands.registerCommand("git-more.view", function () {
 		handleViewer(context)
 	})
-
-	context.subscriptions.push(stager, committer, pusher, puller, viewer);
+	let checkouter = vscode.commands.registerCommand("git-more.checkout", function () {
+		handleCheckout()
+	})
+	context.subscriptions.push(stager, committer, pusher, puller, viewer, checkouter);
 }
 
 function deactivate() { }
