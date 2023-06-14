@@ -5,19 +5,17 @@ const fs = require('fs');
 const gm = sg.simpleGit();
 
 const not_git_dir = "This is not a git directory";
-const command_fail = "Something went wrong with the command"
+const command_fail = "Something went wrong with the command\n"
 
 /**
  * Check if the workspace is a valid git repo
  * @returns Boolean
  */
-function isValidGitRepo() {
-	gm.cwd(__dirname)
-	if (!gm.checkIsRepo()) {
-		vscode.window.showErrorMessage(not_git_dir)
-		return false
-	}
-	return (true);
+async function isValidGitRepo() {
+	vscode.window.showInformationMessage(__dirname)
+	const check = await gm.checkIsRepo()
+	return(check)
+		
 }
 
 /**
@@ -58,8 +56,9 @@ function getWebViewContent(p) {
  * @param {string} name 
  * @returns 
  */
-function stageFile(name = undefined) {
-	if (!isValidGitRepo()) {
+async function stageFile(name = undefined) {
+	const check = await isValidGitRepo() 
+	if (!check) {
 		return
 	}
 	const editor = vscode.window.activeTextEditor;
@@ -138,6 +137,7 @@ function pullChanges() {
  * @param {any} context 
  */
 function handleViewer(context) {
+	showStatusMessage("Viewer")
 	const panel = vscode.window.createWebviewPanel("git-more-view", "Git More View", vscode.ViewColumn.One,
 		{
 			enableScripts: true,
@@ -164,6 +164,7 @@ function handleViewer(context) {
  * Checkout user to specified branch
  */
 function handleCheckout() {
+	showStatusMessage("Checkout")
 	gm.branch().then((val) => {
 		vscode.window.showQuickPick(val.all).then((val) => {
 			if (val) {
@@ -183,6 +184,7 @@ function activate(context) {
 	/**
 	 * Stages changes
 	 */
+	
 	let stager = vscode.commands.registerCommand('git-more.stage', function () {
 		stageFile();
 	});
