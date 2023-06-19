@@ -2,7 +2,6 @@ const vscode = require('vscode');
 const sg = require('simple-git');
 const path = require('path');
 const fs = require('fs');
-const gm = sg.simpleGit();
 
 const not_git_dir = "This is not a git directory";
 const command_fail = "Something went wrong with the command\n"
@@ -11,7 +10,7 @@ const command_fail = "Something went wrong with the command\n"
  * Check if the workspace is a valid git repo
  * @returns Boolean
  */
-async function isValidGitRepo() {
+async function isValidGitRepo(gm) {
 	vscode.window.showInformationMessage(__dirname)
 	const check = await gm.checkIsRepo()
 	return(check)
@@ -53,17 +52,19 @@ function getWebViewContent(p) {
 
 /**
  * Adds file to stage, dont pass it an argument to use active editor
- * @param {string} name 
  * @returns 
  */
-async function stageFile(name = undefined) {
-	const check = await isValidGitRepo() 
+async function stageFile(data) {
+	const {name, gm} = data;
+	const check = await isValidGitRepo(gm) 
 	if (!check) {
+		console.log("This is not a valid git repo")
 		return
 	}
 	const editor = vscode.window.activeTextEditor;
 	if (editor) {
 		const file = (name !== undefined) ? name : editor.document.uri.fsPath;
+		console.log(`Staging File: ${file}`)
 		gm.add(file, (err) => {
 			if (err) {
 				showError(command_fail + "\n" + err.message)
@@ -71,14 +72,16 @@ async function stageFile(name = undefined) {
 				showStatusMessage(file + " Was Staged! 👍")
 			}
 		})
+	}else{
+		console.log("This is not a valid editor")
 	}
 }
 
 /**
  * Commit Changes, opens a message box
  */
-function commitChanges() {
-	if (!isValidGitRepo()) {
+function commitChanges(gm) {
+	if (!isValidGitRepo(gm)) {
 		return;
 	}
 	vscode.window.showInputBox()
@@ -97,8 +100,8 @@ function commitChanges() {
  * Push changes to origin
  * @returns 
  */
-function pushChanges() {
-	if (!isValidGitRepo()) {
+function pushChanges(gm) {
+	if (!isValidGitRepo(gm)) {
 		return;
 	}
 	showStatusMessage("Pushing Changes...")
@@ -124,8 +127,8 @@ function pushChanges() {
  * Pull changes from the origin
  * @returns 
  */
-function pullChanges() {
-	if (!isValidGitRepo()) {
+function pullChanges(gm) {
+	if (!isValidGitRepo(gm)) {
 		return;
 	}
 	showStatusMessage("Pulling Changes")
@@ -184,30 +187,40 @@ function activate(context) {
 	/**
 	 * Stages changes
 	 */
+	let gm=undefined;
+	const workspaceFolder = vscode.workspace.workspaceFolders
+	if(workspaceFolder && workspaceFolder.length>0){
+		const projectDir = workspaceFolder[0].uri.fsPath
+		gm = sg.simpleGit(projectDir);
+	}else{
+		vscode.window.showErrorMessage("Not a valid project folder")
+		return;
+	}
+	
 	
 	let stager = vscode.commands.registerCommand('git-more.stage', function () {
-		stageFile();
+		stageFile({gm:gm, name:undefined});
 	});
 
 	/**
 	 * Commits staged changes with message
 	*/
 	let committer = vscode.commands.registerCommand("git-more.commit", function () {
-		commitChanges()
+		commitChanges(gm)
 	})
 	
 	/**
 	 * Pushes the changes to origin
 	 */
 	let pusher = vscode.commands.registerCommand("git-more.push", function () {
-		pushChanges()
+		pushChanges(gm)
 	})
 	
 	/**
 	 * Pulls latest version
 	 */
 	let puller = vscode.commands.registerCommand("git-more.pull", function () {
-		pullChanges()
+		pullChanges(gm)
 	})
 	
 	/**
