@@ -137,9 +137,10 @@ function pullChanges(gm) {
 
 /**
  * Manage the web-view system
- * @param {any} context 
+ * @param {any} data 
  */
-function handleViewer(context) {
+function handleViewer(data) {
+	const {context, gm} = data;
 	showStatusMessage("Viewer")
 	const panel = vscode.window.createWebviewPanel("git-more-view", "Git More View", vscode.ViewColumn.One,
 		{
@@ -166,7 +167,7 @@ function handleViewer(context) {
 /**
  * Checkout user to specified branch
  */
-function handleCheckout() {
+function handleCheckout(gm) {
 	showStatusMessage("Checkout")
 	gm.branch().then((val) => {
 		vscode.window.showQuickPick(val.all).then((val) => {
@@ -227,11 +228,11 @@ function activate(context) {
 	 * View the app page
 	 */
 	let viewer = vscode.commands.registerCommand("git-more.view", function () {
-		handleViewer(context)
+		handleViewer({context:context, gm:gm})
 	})
 	
 	let checkouter = vscode.commands.registerCommand("git-more.checkout", function () {
-		handleCheckout()
+		handleCheckout(gm)
 	})
 	
 	context.subscriptions.push(stager, committer, pusher, puller, viewer, checkouter);
