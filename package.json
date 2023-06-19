@@ -19,27 +19,27 @@
     "commands": [
       {
         "command": "git-more.stage",
-        "title": "Stage File"
+        "title": "Git More: Stage File"
       },
       {
         "command": "git-more.commit",
-        "title": "Commit Staged Files"
+        "title": "Git More: Commit Staged Files"
       },
       {
         "command": "git-more.push",
-        "title": "Git Push Changes"
+        "title": "Git More: Git Push Changes"
       },
       {
         "command": "git-more.pull",
-        "title": "Git Pull"
+        "title": "Git More: Git Pull"
       },
       {
         "command": "git-more.view",
-        "title": "Visualizer"
+        "title": "Git More: Visualizer"
       },
       {
         "command": "git-more.checkout",
-        "title": "Visualizer"
+        "title": "Git More: Checkout"
       }
     ],
     "keybindings":[
