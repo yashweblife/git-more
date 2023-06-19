@@ -11,10 +11,8 @@ const command_fail = "Something went wrong with the command\n"
  * @returns Boolean
  */
 async function isValidGitRepo(gm) {
-	vscode.window.showInformationMessage(__dirname)
 	const check = await gm.checkIsRepo()
 	return(check)
-		
 }
 
 /**
