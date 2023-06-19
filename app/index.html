@@ -7,11 +7,28 @@
         <link rel="stylesheet" href="./style.css">
         <script src="./script.js"></script>
         <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
             body>header {
                 display: flex;
-                justify-content: center;
+                background-color: rgb(15, 15, 15);
+                padding: 1em;
+            }
+
+            .info-header {
+                display: flex;
                 align-items: center;
-                border-bottom: 0.2em solid white;
+            }
+
+            .info-header>* {
+                margin: 0.5em 1em;
+            }
+            .info-section{
+                display: flex;
             }
 
             .card {
@@ -47,19 +64,32 @@
             }
 
             .container {
+                width: clamp(250px, 100%, 300px);
                 display: flex;
                 align-items: center;
                 background-color: rgb(42, 42, 42);
                 padding: 1em;
-                margin: 0.5em 0
+                margin: 0.5em
             }
 
             .card-holder {
                 display: flex;
+                flex-direction: column;
+            }
+
+            .card-holder .card-list {
+                display: flex;
+                flex-direction: column;
+                height: 300px;
+                overflow-y: auto;
             }
 
             .card-holder>h4 {
                 width: 300px;
+            }
+
+            #tester {
+                display: flex;
             }
         </style>
         <title>Document</title>
@@ -116,6 +146,7 @@
             let data = undefined
             window.addEventListener("message", (e) => {
                 data = e.data;
+                console.log(data)
                 getStatus();
             })
 
@@ -139,17 +170,40 @@
                 const list = document.querySelector("#get-status")
                 const d = document.createElement("div")
                 if (data !== undefined) {
-                    const { current, modified, not_added } = data.stats;
+                    const { current, modified, not_added, ahead, behind, staged, tracking } = data.stats;
                     const dom = new $("div")
-                        .addChild(new $("h3").setText(`Current Branch: ${current}`))
-                        .addChild(new $("div")
-                            .addClass("container")
-                            .addChild(new $("div").addClass("card-holder").addChild(new $("h4").setText("Modified")).addChildren(modified.map((val) => new $("p").setText(val).addClass("card"))))
+                        .addChild(new $("div").addClass("info-header")
+                            .addChild(new $("h3").setText(`Current Branch: ${current}`))
+                            .addChild(new $("h4").setText(`Ahead By: ${ahead}`))
+                            .addChild(new $("h4").setText(`Behind By: ${behind}`))
+                            .addChild(new $("h4").setText(`Tracking: ${tracking}`))
                         )
-                        .addChild(new $("div")
-                            .addClass("container")
-                            .addChild(new $("div").addClass("card-holder").addChild(new $("h4").setText("Not Added")).addChildren(create_not_add_card(not_added)))
-                        )
+                        .addChild(new $("div").addClass("info-section")
+                            .addChild(new $("div")
+                                .addClass("container")
+                                .addChild(new $("div")
+                                    .addClass("card-holder")
+                                    .addChild(new $("h4")
+                                        .setText("Modified"))
+                                    .addChild(new $("div")
+                                        .addClass("card-list")
+                                        .addChildren(modified.map((val) => new $("p").setText(val).addClass("card").addChild(new $("button").setText("Stage")))))
+                                )
+                            )
+                            .addChild(new $("div")
+                                .addClass("container")
+                                .addChild(new $("div").addClass("card-holder").addChild(new $("h4").setText("New Stuff"))
+                                    .addChild(
+                                        new $("div").addClass("card-list")
+                                            .addChildren(create_not_add_card(not_added))))
+                            )
+                            .addChild(new $("div")
+                                .addClass("container")
+                                .addChild(new $("div").addClass("card-holder").addChild(new $("h4").setText("Staged"))
+                                    .addChild(
+                                        new $("div").addClass("card-list"))
+                                    .addChildren(create_not_add_card(staged)))
+                            ))
                     const tester = $.get("#tester")
                     tester.addChild(dom)
                 }
