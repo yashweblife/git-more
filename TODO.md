@@ -7,3 +7,4 @@
 - [ ] Remake with typescript
 - [ ] Update README with better info
 - [ ] Make a better file structure 
+- [ ] Make webview buttons functional
