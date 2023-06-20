@@ -1,96 +1,39 @@
 {
   "name": "git-more",
-  "displayName": "Git More",
-  "description": "Get more shortcuts for git",
-  "publisher": "yashweblife",
-  "version": "0.1.4",
-  "repository": "https://github.com/yashweblife/git-more",
-  "icon": "icon.png",
+  "displayName": "",
+  "description": "",
+  "version": "0.0.1",
   "engines": {
     "vscode": "^1.79.0"
   },
   "categories": [
-    "Other",
-    "Keymaps"
+    "Other"
   ],
   "activationEvents": [],
-  "main": "./extension.js",
+  "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "git-more.stage",
-        "title": "Git More: Stage File"
-      },
-      {
-        "command": "git-more.commit",
-        "title": "Git More: Commit Staged Files"
-      },
-      {
-        "command": "git-more.push",
-        "title": "Git More: Git Push Changes"
-      },
-      {
-        "command": "git-more.pull",
-        "title": "Git More: Git Pull"
-      },
-      {
-        "command": "git-more.view",
-        "title": "Git More: Visualizer"
-      },
-      {
-        "command": "git-more.checkout",
-        "title": "Git More: Checkout"
-      }
-    ],
-    "keybindings":[
-      {
-        "win": "ctrl+shift+win+left",
-        "mac": "ctrl+cmd+left",
-        "command": "git-more.stage",
-        "key": "ctrl+meta+left"
-      },
-      {
-        "win": "ctrl+shift+win+right",
-        "mac": "ctrl+cmd+right",
-        "command": "git-more.commit",
-        "key": "ctrl+meta+right"
-      },
-      {
-        "win": "ctrl+shift+win+up",
-        "mac": "ctrl+cmd+up",
-        "command": "git-more.push",
-        "key": "ctrl+meta+up"
-      },
-      {
-        "win": "ctrl+shift+win+down",
-        "mac": "ctrl+cmd+down",
-        "command": "git-more.pull",
-        "key": "ctrl+meta+down"
-      },
-      {
-        "win": "ctrl+shift+win+v",
-        "mac": "ctrl+cmd+v",
-        "command": "git-more.view",
-        "key": "ctrl+meta+v"
-      },
-      {
-        "win": "ctrl+shift+win+c",
-        "mac": "ctrl+cmd+c",
-        "command": "git-more.checkout",
-        "key": "ctrl+meta+c"
+        "command": "git-more.helloWorld",
+        "title": "Hello World"
       }
     ]
   },
   "scripts": {
-    "lint": "eslint .",
-    "pretest": "npm run lint",
-    "test": "node ./test/runTest.js"
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "20.2.5",
     "@types/vscode": "^1.79.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
     "@vscode/test-electron": "^2.3.2",
     "eslint": "^8.41.0",
     "glob": "^8.1.0",
