@@ -1,9 +1,9 @@
 {
   "name": "git-more",
-  "displayName": "git-more",
+  "displayName": "Git More",
   "description": "Get more shortcuts for git",
   "publisher": "yashweblife",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "repository": "https://github.com/yashweblife/git-more",
   "icon": "icon.png",
   "engines": {
