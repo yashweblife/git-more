@@ -1,5 +1,5 @@
 import { SimpleGit, simpleGit } from "simple-git";
-import { window as w, workspace } from "vscode";
+import { InputBoxOptions, window as w, workspace } from "vscode";
 export class GitMore{
     public gm:(SimpleGit|null)=null;
     public currentWorkspace:string="";
@@ -19,6 +19,17 @@ export class GitMore{
             if(err){
                 console.log(err)
             }
+        })
+    }
+    public commitCurrentChanges(){
+        if(!this.gm) return;
+        const inputOptions:InputBoxOptions = {
+            title:"Enter a Message"
+        } 
+        w.showInputBox(inputOptions).then((data:(string|undefined))=>{
+            if(!data) return;
+            if(data === undefined || data == "") return;
+            this.gm?.commit(data);
         })
     }
 }
