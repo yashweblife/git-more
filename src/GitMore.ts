@@ -1,4 +1,4 @@
-import { SimpleGit, simpleGit } from "simple-git";
+import { BranchSummary, SimpleGit, simpleGit } from "simple-git";
 import { InputBoxOptions, window as w, workspace } from "vscode";
 export class GitMore{
     public gm:(SimpleGit|null)=null;
@@ -46,5 +46,16 @@ export class GitMore{
             this.gm?.push('origin', branchName);
 
         })
+    }
+    public checkoutToBranch(){
+        if(!this.gm) return;
+        this.gm.branch().then((branches:BranchSummary)=>{
+            w.showQuickPick(branches.all).then((data)=>{
+                if(data){
+                    this.gm?.checkout(data)
+                }
+            })
+        })
+        .catch((err)=>{})
     }
 }
