@@ -23,6 +23,17 @@ export class GitMore{
     }
     public commitCurrentChanges(){
         if(!this.gm) return;
+        let checkStages=true;
+        this.gm.status((err, data)=>{
+            if(err){
+                checkStages=false;
+                return;
+            } 
+            if(data.staged.length == 0){
+                checkStages=false
+            }
+        })
+        if(!checkStages) return;
         const inputOptions:InputBoxOptions = {
             title:"Enter a Message"
         } 
