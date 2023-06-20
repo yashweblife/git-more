@@ -9,13 +9,21 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "git-more.open"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "git-more.helloWorld",
-        "title": "Hello World"
+        "command": "git-more.stage",
+        "title": "Git More: Open"
+      }
+    ],
+    "keybindings":[
+      {
+        "command": "git-more.stage",
+        "key": "ctrl+meta+up"
       }
     ]
   },
