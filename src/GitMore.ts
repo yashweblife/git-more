@@ -36,4 +36,15 @@ export class GitMore{
         if(!this.gm) return;
         this.gm.pull();
     }
+    public pushLocalChanges(){
+        if(!this.gm) return;
+        this.gm.branchLocal((err,data)=>{
+            if(err){
+                return;
+            }
+            const branchName = data.current;
+            this.gm?.push('origin', branchName);
+
+        })
+    }
 }
