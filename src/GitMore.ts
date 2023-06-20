@@ -32,4 +32,8 @@ export class GitMore{
             this.gm?.commit(data);
         })
     }
+    public pullLatestVersion(){
+        if(!this.gm) return;
+        this.gm.pull();
+    }
 }
