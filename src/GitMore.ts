@@ -58,4 +58,15 @@ export class GitMore{
         })
         .catch((err)=>{})
     }
+    public newBranch(){
+        if(!this.gm) return;
+        const inputOptions:InputBoxOptions = {
+            title:"Enter a Branch Name"
+        } 
+        w.showInputBox(inputOptions).then((data:(string|undefined))=>{
+            if(!data) return;
+            if(data === undefined || data == "") return;
+            this.gm?.checkoutLocalBranch(data)
+        })
+    }
 }
