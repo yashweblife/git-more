@@ -221,7 +221,16 @@ function activate(context) {
 		handleCheckout()
 	})
 	
-	context.subscriptions.push(stager, committer, pusher, puller, viewer, checkouter);
+	let merger = vscode.commands.registerCommand("git-more.merge", function(){
+
+	})
+	let newBranch = vscode.commands.registerCommand("git-more.newbranch", function(){})
+	
+	let fetcher = vscode.commands.registerCommand("git-more.fetcher", function(){})
+	
+	let syncer = vscode.commands.registerCommand("git-more.syncer", function(){})
+
+	context.subscriptions.push(stager, committer, pusher, puller, viewer, checkouter, merger, newBranch, fetcher, syncer);
 }
 
 function deactivate() { }
