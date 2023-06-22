@@ -181,6 +181,10 @@ function handleCheckout(gm) {
 		})
 	})
 }
+function createNewBranch(gm){}
+function handleMergeBranch(gm){}
+function handleSync(gm){}
+function handleFetch(gm){}
 
 function activate(context) {
 	/**
@@ -234,13 +238,19 @@ function activate(context) {
 	})
 	
 	let merger = vscode.commands.registerCommand("git-more.merge", function(){
-
+		handleMergeBranch(gm)
 	})
-	let newBranch = vscode.commands.registerCommand("git-more.newbranch", function(){})
+	let newBranch = vscode.commands.registerCommand("git-more.newbranch", function(){
+		createNewBranch(gm)
+	})
 	
-	let fetcher = vscode.commands.registerCommand("git-more.fetcher", function(){})
+	let fetcher = vscode.commands.registerCommand("git-more.fetcher", function(){
+		handleFetch(gm)
+	})
 	
-	let syncer = vscode.commands.registerCommand("git-more.syncer", function(){})
+	let syncer = vscode.commands.registerCommand("git-more.syncer", function(){
+		handleSync(gm)
+	})
 
 	context.subscriptions.push(stager, committer, pusher, puller, viewer, checkouter, merger, newBranch, fetcher, syncer);
 }
