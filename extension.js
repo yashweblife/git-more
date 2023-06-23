@@ -10,8 +10,8 @@ const command_fail = "Something went wrong with the command\n"
  * @returns Boolean
  */
 async function isValidGitRepo(gm) {
-	const check = await gm.checkIsRepo()
-	return(check)
+	const check = await gm.checkIsRepo();
+	return (check);
 }
 
 /**
@@ -20,9 +20,9 @@ async function isValidGitRepo(gm) {
  */
 function showStatusMessage(message) {
 	const duration = 3000;
-	const msg = vscode.window.setStatusBarMessage(message, duration)
+	const msg = vscode.window.setStatusBarMessage(message, duration);
 	setTimeout(() => {
-		msg.dispose()
+		msg.dispose();
 	}, duration);
 }
 
@@ -31,7 +31,7 @@ function showStatusMessage(message) {
  * @param {*} message 
  */
 function showError(message) {
-	vscode.window.showErrorMessage(message)
+	vscode.window.showErrorMessage(message);
 }
 
 /**
@@ -43,7 +43,7 @@ function getWebViewContent(p) {
 	const resPath = vscode.Uri.file(
 		path.join(__dirname, p)
 	)
-	const file = fs.readFileSync(resPath.fsPath, 'utf-8')
+	const file = fs.readFileSync(resPath.fsPath, 'utf-8');
 	return file;
 }
 
@@ -52,11 +52,11 @@ function getWebViewContent(p) {
  * @returns 
  */
 async function stageFile(data) {
-	const {name, gm} = data;
-	const check = await isValidGitRepo(gm) 
+	const { name, gm } = data;
+	const check = await isValidGitRepo(gm);
 	if (!check) {
-		console.log("This is not a valid git repo")
-		return
+		console.log("This is not a valid git repo");
+		return;
 	}
 	const editor = vscode.window.activeTextEditor;
 	if (editor) {
@@ -64,13 +64,13 @@ async function stageFile(data) {
 		console.log(`Staging File: ${file}`)
 		gm.add(file, (err) => {
 			if (err) {
-				showError(command_fail + "\n" + err.message)
+				showError(command_fail + "\n" + err.message);
 			} else {
-				showStatusMessage(file + " Was Staged! 👍")
+				showStatusMessage(file + " Was Staged! 👍");
 			}
 		})
-	}else{
-		console.log("This is not a valid editor")
+	} else {
+		console.log("This is not a valid editor");
 	}
 }
 
@@ -84,11 +84,11 @@ function commitChanges(gm) {
 	vscode.window.showInputBox()
 		.then((value) => {
 			if (value !== undefined && value !== "") {
-				gm.commit(value)
-				console.log(value)
-				showStatusMessage("Committed with the message: " + value)
+				gm.commit(value);
+				console.log(value);
+				showStatusMessage("Committed with the message: " + value);
 			} else {
-				showError("Canceled")
+				showError("Canceled");
 			}
 		})
 }
@@ -101,18 +101,18 @@ function pushChanges(gm) {
 	if (!isValidGitRepo(gm)) {
 		return;
 	}
-	showStatusMessage("Pushing Changes...")
+	showStatusMessage("Pushing Changes...");
 	gm.branchLocal((error, result) => {
 		if (error) {
 			console.log(error)
 			return;
 		}
-		const name = result.current
+		const name = result.current;
 		// @ts-ignore
 		gm.push('origin', name, (error, result) => {
 			// @ts-ignore
 			if (error) {
-				showStatusMessage("Push Didnt Work\n" + error.message)
+				showStatusMessage("Push Didnt Work\n" + error.message);
 				return;
 			}
 			showError(result)
@@ -128,7 +128,7 @@ function pullChanges(gm) {
 	if (!isValidGitRepo(gm)) {
 		return;
 	}
-	showStatusMessage("Pulling Changes")
+	showStatusMessage("Pulling Changes");
 	gm.pull();
 }
 
@@ -137,19 +137,19 @@ function pullChanges(gm) {
  * @param {any} data 
  */
 function handleViewer(data) {
-	const {context, gm} = data;
-	showStatusMessage("Viewer")
+	const { context, gm } = data;
+	showStatusMessage("Viewer");
 	const panel = vscode.window.createWebviewPanel("git-more-view", "Git More View", vscode.ViewColumn.One,
 		{
 			enableScripts: true,
 			// localResourceRoots:[vscode.Uri.file(path.join(context.extensionPath,'webview'))],
 		})
-	panel.webview.html = getWebViewContent("./app/index.html")
+	panel.webview.html = getWebViewContent("./app/index.html");
 	gm.status((error, result) => {
 		panel.webview.postMessage({
 			message: "Hello World",
 			stats: result
-		})
+		});
 	})
 	panel.webview.onDidReceiveMessage((message) => {
 		switch (message.command) {
@@ -165,15 +165,15 @@ function handleViewer(data) {
  * Checkout user to specified branch
  */
 function handleCheckout(gm) {
-	showStatusMessage("Checkout")
+	showStatusMessage("Checkout");
 	gm.branch().then((val) => {
 		vscode.window.showQuickPick(val.all).then((val) => {
 			if (val) {
 				gm.checkout(val, (error) => {
 					if (error) {
-						showError(error.message)
+						showError(error.message);
 					} else {
-						showStatusMessage("Checked Out To: " + val)
+						showStatusMessage("Checked Out To: " + val);
 					}
 				})
 			}
@@ -184,95 +184,95 @@ function handleCheckout(gm) {
  * 
  * @param {import('simple-git').SimpleGit} gm 
  */
-function createNewBranch(gm){
-	vscode.window.showInputBox({}).then((val)=>{
+function createNewBranch(gm) {
+	vscode.window.showInputBox({}).then((val) => {
 		gm.status((error, result) => {
-			if(error){return}
-			if(result){
-				gm.checkoutBranch(val,result.current);
+			if (error) { return }
+			if (result) {
+				gm.checkoutBranch(val, result.current);
 			}
 		})
-		
+
 	})
 }
 /**
  * 
  * @param {import('simple-git').SimpleGit} gm 
  */
-function handleMergeBranch(gm){
+function handleMergeBranch(gm) {
 	gm.branch().then((val) => {
 		vscode.window.showQuickPick(val.all).then((val) => {
-			gm.merge([val])
+			gm.merge([val]);
 		})
 	})
 }
-function handleSync(gm){}
-function handleFetch(gm){}
+function handleSync(gm) { }
+function handleFetch(gm) { }
 
 function activate(context) {
 	/**
 	 * Stages changes
 	 */
-	let gm=undefined;
-	const workspaceFolder = vscode.workspace.workspaceFolders
-	if(workspaceFolder && workspaceFolder.length>0){
-		const projectDir = workspaceFolder[0].uri.fsPath
+	let gm = undefined;
+	const workspaceFolder = vscode.workspace.workspaceFolders;
+	if (workspaceFolder && workspaceFolder.length > 0) {
+		const projectDir = workspaceFolder[0].uri.fsPath;
 		gm = sg.simpleGit(projectDir);
-	}else{
-		vscode.window.showErrorMessage("Not a valid project folder")
+	} else {
+		vscode.window.showErrorMessage("Not a valid project folder");
 		return;
 	}
-	
-	
+
+
 	let stager = vscode.commands.registerCommand('git-more.stage', function () {
-		stageFile({gm:gm, name:undefined});
+		stageFile({ gm: gm, name: undefined });
 	});
 
 	/**
 	 * Commits staged changes with message
 	*/
 	let committer = vscode.commands.registerCommand("git-more.commit", function () {
-		commitChanges(gm)
+		commitChanges(gm);
 	})
-	
+
 	/**
 	 * Pushes the changes to origin
 	 */
 	let pusher = vscode.commands.registerCommand("git-more.push", function () {
-		pushChanges(gm)
+		pushChanges(gm);
 	})
-	
+
 	/**
 	 * Pulls latest version
 	 */
 	let puller = vscode.commands.registerCommand("git-more.pull", function () {
-		pullChanges(gm)
+		pullChanges(gm);
 	})
-	
+
 	/**
 	 * View the app page
 	 */
 	let viewer = vscode.commands.registerCommand("git-more.view", function () {
-		handleViewer({context:context, gm:gm})
+		handleViewer({ context: context, gm: gm });
 	})
-	
+
 	let checkouter = vscode.commands.registerCommand("git-more.checkout", function () {
-		handleCheckout(gm)
+		handleCheckout(gm);
 	})
-	
-	let merger = vscode.commands.registerCommand("git-more.merge", function(){
-		handleMergeBranch(gm)
+
+	let merger = vscode.commands.registerCommand("git-more.merge", function () {
+		handleMergeBranch(gm);
 	})
-	let newBranch = vscode.commands.registerCommand("git-more.newbranch", function(){
-		createNewBranch(gm)
+	let newBranch = vscode.commands.registerCommand("git-more.newbranch", function () {
+		createNewBranch(gm);
 	})
-	
-	let fetcher = vscode.commands.registerCommand("git-more.fetcher", function(){
-		handleFetch(gm)
+
+	let fetcher = vscode.commands.registerCommand("git-more.fetcher", function () {
+		handleFetch(gm);
 	})
-	
-	let syncer = vscode.commands.registerCommand("git-more.syncer", function(){
-		handleSync(gm)
+
+	let syncer = vscode.commands.registerCommand("git-more.syncer", function () {
+		handleSync(gm);
 	})
 
 	context.subscriptions.push(stager, committer, pusher, puller, viewer, checkouter, merger, newBranch, fetcher, syncer);
