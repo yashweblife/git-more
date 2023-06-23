@@ -206,8 +206,14 @@ function handleMergeBranch(gm) {
 		})
 	})
 }
-function handleSync(gm) { }
-function handleFetch(gm) { }
+
+/**
+ * 
+ * @param {import('simple-git').SimpleGit} gm 
+ */
+function handleFetch(gm) {
+	gm.fetch();
+}
 
 function activate(context) {
 	/**
