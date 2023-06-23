@@ -181,7 +181,21 @@ function handleCheckout(gm) {
 		})
 	})
 }
-function createNewBranch(gm){}
+/**
+ * 
+ * @param {import('simple-git').SimpleGit} gm 
+ */
+function createNewBranch(gm){
+	vscode.window.showInputBox({}).then((val)=>{
+		gm.status((error, result) => {
+			if(error){return}
+			if(result){
+				gm.checkoutBranch(val,result.current);
+			}
+		})
+		
+	})
+}
 function handleMergeBranch(gm){}
 function handleSync(gm){}
 function handleFetch(gm){}
