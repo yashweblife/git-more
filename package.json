@@ -13,7 +13,14 @@
     "Other",
     "Keymaps"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "git-more.stage",
+    "git-more.commit",
+    "git-more.push",
+    "git-more.pull",
+    "git-more.view",
+    "git-more.checkout"
+  ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
@@ -40,6 +47,22 @@
       {
         "command": "git-more.checkout",
         "title": "Git More: Checkout"
+      },
+      {
+        "command": "git-more.merge",
+        "title": "Git More: Merge"
+      },
+      {
+        "command": "git-more.newbranch",
+        "title": "Git More: New Branch"
+      },
+      {
+        "command": "git-more.fetcher",
+        "title": "Git More: Fetch"
+      },
+      {
+        "command": "git-more.syncer",
+        "title": "Git More: Sync"
       }
     ],
     "keybindings":[
