@@ -2,7 +2,6 @@ const vscode = require('vscode');
 const sg = require('simple-git');
 const path = require('path');
 const fs = require('fs');
-
 const not_git_dir = "This is not a git directory";
 const command_fail = "Something went wrong with the command\n"
 
@@ -196,7 +195,17 @@ function createNewBranch(gm){
 		
 	})
 }
-function handleMergeBranch(gm){}
+/**
+ * 
+ * @param {import('simple-git').SimpleGit} gm 
+ */
+function handleMergeBranch(gm){
+	gm.branch().then((val) => {
+		vscode.window.showQuickPick(val.all).then((val) => {
+			gm.merge([val])
+		})
+	})
+}
 function handleSync(gm){}
 function handleFetch(gm){}
 
