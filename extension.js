@@ -256,21 +256,33 @@ function activate(context) {
 		handleViewer({ context: context, gm: gm });
 	})
 
+	/**
+	 * CheckOut to another branch
+	 */
 	let checkouter = vscode.commands.registerCommand("git-more.checkout", function () {
 		handleCheckout(gm);
 	})
-
+	/**
+	 * Merge a branch into the current branch
+	 */
 	let merger = vscode.commands.registerCommand("git-more.merge", function () {
 		handleMergeBranch(gm);
 	})
+	/**
+	 * Create a new branch
+	 */
 	let newBranch = vscode.commands.registerCommand("git-more.newbranch", function () {
 		createNewBranch(gm);
 	})
-
+	/**
+	 * fetch origin changes
+	 */
 	let fetcher = vscode.commands.registerCommand("git-more.fetcher", function () {
 		handleFetch(gm);
 	})
-
+	/**
+	 * Sync
+	 */
 	let syncer = vscode.commands.registerCommand("git-more.syncer", function () {
 		handleSync(gm);
 	})
