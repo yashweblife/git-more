@@ -214,7 +214,13 @@ function handleMergeBranch(gm) {
 function handleFetch(gm) {
 	gm.fetch();
 }
-
+/**
+ * Fetch origin changes
+ * @param {import('simple-git').SimpleGit} gm 
+ */
+function handleInit(gm){
+	gm.init();
+}
 function activate(context) {
 	/**
 	 * Stages changes
