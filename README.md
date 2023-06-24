@@ -51,4 +51,28 @@ Some useful shortcuts for git functions. Stage active file and commit them with 
 - key: `ctrl+meta+c`
 
 
+#### New Branch
+- win: `ctrl+shift+win+b`
+- mac: `ctrl+cmd+b`
+- command: `git-more.newBranch`
+- key: `ctrl+meta+b`
+
+#### Merge Branch
+- win: `ctrl+shift+win+m`
+- mac: `ctrl+cmd+m`
+- command: `git-more.mergeBranch`
+- key: `ctrl+meta+m`
+
+#### Fetch
+- win: `ctrl+shift+win+f`
+- mac: `ctrl+cmd+f`
+- command: `git-more.fetch`
+- key: `ctrl+meta+f`
+
+#### Init
+- win: `ctrl+shift+win+i`
+- mac: `ctrl+cmd+i`
+- command: `git-more.init`
+- key: `ctrl+meta+i`
+
 There will be more functionality add based on demand.
