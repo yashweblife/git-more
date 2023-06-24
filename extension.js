@@ -181,7 +181,7 @@ function handleCheckout(gm) {
 	})
 }
 /**
- * 
+ * Create a new branch
  * @param {import('simple-git').SimpleGit} gm 
  */
 function createNewBranch(gm) {
@@ -196,7 +196,7 @@ function createNewBranch(gm) {
 	})
 }
 /**
- * 
+ * Merge a branch into the current branch
  * @param {import('simple-git').SimpleGit} gm 
  */
 function handleMergeBranch(gm) {
@@ -208,7 +208,7 @@ function handleMergeBranch(gm) {
 }
 
 /**
- * 
+ * Fetch origin changes
  * @param {import('simple-git').SimpleGit} gm 
  */
 function handleFetch(gm) {
