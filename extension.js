@@ -286,12 +286,6 @@ function activate(context) {
 	let fetcher = vscode.commands.registerCommand("git-more.fetcher", function () {
 		handleFetch(gm);
 	})
-	/**
-	 * Sync
-	 */
-	let syncer = vscode.commands.registerCommand("git-more.syncer", function () {
-		handleSync(gm);
-	})
 
 	context.subscriptions.push(stager, committer, pusher, puller, viewer, checkouter, merger, newBranch, fetcher, syncer);
 }
