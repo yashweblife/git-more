@@ -38,7 +38,18 @@ class Manager{
 			console.log("This is not a valid editor");
 		}
 	}
-	commitStagedChanges(){}
+	commitStagedChanges(){
+		vscode.window.showInputBox()
+		.then((value) => {
+			if (value !== undefined && value !== "") {
+				this.gm.commit(value);
+				console.log(value);
+				showStatusMessage("Committed with the message: " + value);
+			} else {
+				showError("Canceled");
+			}
+		})
+	}
 	pushToRemote(){}
 	pullChanges(){}
 	checkoutBranch(){}
