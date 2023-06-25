@@ -69,7 +69,10 @@ class Manager {
 			})
 		})
 	}
-	pullChanges() { }
+	pullChanges() {
+		showStatusMessage("Pulling Changes");
+		this.gm.pull();
+	}
 	checkoutBranch() { }
 	createBranch() { }
 	deleteBranch() { }
