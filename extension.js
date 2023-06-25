@@ -11,18 +11,18 @@ const command_fail = "Something went wrong with the command\n"
  */
 
 
-class Manager{
+class Manager {
 	/**
 	 * @type {import('simple-git').SimpleGit} gm
 	 */
-	constructor(){
+	constructor() {
 		const workspaceFolder = vscode.workspace.workspaceFolders;
 		if (workspaceFolder && workspaceFolder.length > 0) {
 			const projectDir = workspaceFolder[0].uri.fsPath;
 			this.gm = sg.simpleGit(projectDir);
 		}
 	}
-	stageCurrentFile(){
+	stageCurrentFile() {
 		const editor = vscode.window.activeTextEditor;
 		if (editor) {
 			const file = editor.document.uri.fsPath;
@@ -38,25 +38,43 @@ class Manager{
 			console.log("This is not a valid editor");
 		}
 	}
-	commitStagedChanges(){
+	commitStagedChanges() {
 		vscode.window.showInputBox()
-		.then((value) => {
-			if (value !== undefined && value !== "") {
-				this.gm.commit(value);
-				console.log(value);
-				showStatusMessage("Committed with the message: " + value);
-			} else {
-				showError("Canceled");
+			.then((value) => {
+				if (value !== undefined && value !== "") {
+					this.gm.commit(value);
+					console.log(value);
+					showStatusMessage("Committed with the message: " + value);
+				} else {
+					showError("Canceled");
+				}
+			})
+	}
+	pushToRemote() {
+		showStatusMessage("Pushing Changes...");
+		this.gm.branchLocal((error, result) => {
+			if (error) {
+				console.log(error)
+				return;
 			}
+			const name = result.current;
+			// @ts-ignore
+			this.gm.push('origin', name, (error, result) => {
+				// @ts-ignore
+				if (error) {
+					showStatusMessage("Push Didnt Work\n" + error.message);
+					return;
+				}
+				showError(result)
+			})
 		})
 	}
-	pushToRemote(){}
-	pullChanges(){}
-	checkoutBranch(){}
-	createBranch(){}
-	deleteBranch(){}
-	handleMerge(){}
-	handleInit(){}
+	pullChanges() { }
+	checkoutBranch() { }
+	createBranch() { }
+	deleteBranch() { }
+	handleMerge() { }
+	handleInit() { }
 }
 
 async function isValidGitRepo(gm) {
@@ -268,7 +286,7 @@ function handleFetch(gm) {
  * Fetch origin changes
  * @param {import('simple-git').SimpleGit} gm 
  */
-function handleInit(gm){
+function handleInit(gm) {
 	gm.init();
 }
 function activate(context) {
@@ -342,7 +360,7 @@ function activate(context) {
 	let fetcher = vscode.commands.registerCommand("git-more.fetcher", function () {
 		handleFetch(gm);
 	})
-	let initializer = vscode.commands.registerCommand("git-more.init", function (){
+	let initializer = vscode.commands.registerCommand("git-more.init", function () {
 		handleInit(gm)
 	})
 
