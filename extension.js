@@ -12,8 +12,32 @@ const command_fail = "Something went wrong with the command\n"
 
 
 class Manager{
-	constructor(){}
-	stageCurrentFile(){}
+	/**
+	 * @type {import('simple-git').SimpleGit} gm
+	 */
+	constructor(){
+		const workspaceFolder = vscode.workspace.workspaceFolders;
+		if (workspaceFolder && workspaceFolder.length > 0) {
+			const projectDir = workspaceFolder[0].uri.fsPath;
+			this.gm = sg.simpleGit(projectDir);
+		}
+	}
+	stageCurrentFile(){
+		const editor = vscode.window.activeTextEditor;
+		if (editor) {
+			const file = editor.document.uri.fsPath;
+			console.log(`Staging File: ${file}`)
+			this.gm.add(file, (err) => {
+				if (err) {
+					showError(command_fail + "\n" + err.message);
+				} else {
+					showStatusMessage(file + " Was Staged! 👍");
+				}
+			})
+		} else {
+			console.log("This is not a valid editor");
+		}
+	}
 	commitStagedChanges(){}
 	pushToRemote(){}
 	pullChanges(){}
