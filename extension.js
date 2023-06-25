@@ -9,6 +9,21 @@ const command_fail = "Something went wrong with the command\n"
  * Check if the workspace is a valid git repo
  * @returns Boolean
  */
+
+
+class Manager{
+	constructor(){}
+	stageCurrentFile(){}
+	commitStagedChanges(){}
+	pushToRemote(){}
+	pullChanges(){}
+	checkoutBranch(){}
+	createBranch(){}
+	deleteBranch(){}
+	handleMerge(){}
+	handleInit(){}
+}
+
 async function isValidGitRepo(gm) {
 	const check = await gm.checkIsRepo();
 	return (check);
