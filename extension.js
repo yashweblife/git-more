@@ -50,6 +50,14 @@ class Manager {
 				}
 			})
 	}
+	addToStaging() {
+		this.gm.status((err, res)=>{
+			if(err){
+				return
+			}
+			console.log(res)
+		})
+	}
 	pushToRemote() {
 		showStatusMessage("Pushing Changes...");
 		this.gm.branchLocal((error, result) => {
@@ -143,6 +151,28 @@ async function stageFile(data) {
 	} else {
 		console.log("This is not a valid editor");
 	}
+}
+
+async function addToStaging(data) {
+	const { gm } = data
+	console.log("Add to staging")
+	gm.status((err, res)=>{
+		if(err){
+			return
+		}
+		let list = res.files.map(f=>f.path)
+		if(list.length>0){
+			vscode.window.showQuickPick(list, {
+				canPickMany: true,
+				placeHolder: "Select files to add to staging"	
+			}).then((picks)=>{
+				if(!picks) return
+				picks.forEach(p=>{
+					gm.add(p)
+				})
+			})
+		}
+	})
 }
 
 /**
@@ -363,11 +393,14 @@ function activate(context) {
 	let fetcher = vscode.commands.registerCommand("git-more.fetcher", function () {
 		handleFetch(gm);
 	})
+	let stageSelector = vscode.commands.registerCommand("git-more.stageSelector", function () {
+		addToStaging({ gm: gm });
+	})
 	let initializer = vscode.commands.registerCommand("git-more.init", function () {
 		handleInit(gm)
 	})
 
-	context.subscriptions.push(stager, committer, pusher, puller, viewer, checkouter, merger, newBranch, fetcher, syncer);
+	context.subscriptions.push(stager, committer, pusher, puller, viewer, checkouter, merger, newBranch, fetcher, stageSelector);
 }
 
 function deactivate() { }
