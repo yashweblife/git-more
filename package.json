@@ -3,7 +3,7 @@
   "displayName": "Git More",
   "description": "Get more shortcuts for git",
   "publisher": "yashweblife",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "repository": "https://github.com/yashweblife/git-more",
   "icon": "icon.png",
   "engines": {
@@ -19,7 +19,8 @@
     "git-more.push",
     "git-more.pull",
     "git-more.view",
-    "git-more.checkout"
+    "git-more.checkout",
+    "git-more.stageSelector"
   ],
   "main": "./extension.js",
   "contributes": {
@@ -63,6 +64,10 @@
       {
         "command": "git-more.syncer",
         "title": "Git More: Sync"
+      },
+      {
+        "command": "git-more.stageSelector",
+        "title": "Git More: Stage Select"
       }
     ],
     "keybindings":[
@@ -101,6 +106,12 @@
         "mac": "ctrl+cmd+c",
         "command": "git-more.checkout",
         "key": "ctrl+meta+c"
+      },
+      {
+        "win": "ctrl+shift+win+left",
+        "mac": "ctrl+cmd+left",
+        "command": "git-more.stageSelector",
+        "key": "ctrl+shift+meta+left"
       }
     ]
   },
